@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track With Bob — Your Trusted Tracking Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --deep: #0f0f0f;
+    --card: #141414;
+    --border: #1e1e1e;
+    --red: #D4121A;
+    --red-dim: #9b0d12;
+    --red-glow: rgba(212,18,26,0.15);
+    --white: #f5f5f5;
+    --muted: #888;
+    --light: #bbb;
+    --accent: #ff2d35;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5vw;
+    height: 64px;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--red); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--red); }
+
+  .nav-cta {
+    background: var(--red);
+    color: var(--white) !important;
+    padding: 0.45rem 1.2rem;
+    border-radius: 2px;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--accent) !important; color: var(--white) !important; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.3s;
+  }
+
+  /* ── SECTIONS ── */
+  section { display: none; }
+  section.active { display: block; }
+
+  /* ── HERO ── */
+  #home { display: block; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 120px 5vw 80px;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(212,18,26,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,18,26,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridPulse 8s ease-in-out infinite;
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .hero-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 20%, var(--black) 80%);
+  }
+
+  .hero-redline {
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--red), transparent);
+    animation: lineSlide 4s ease-in-out infinite;
+  }
+
+  @keyframes lineSlide {
+    0%, 100% { opacity: 0.4; transform: scaleY(0.6); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--red);
+    padding: 0.3rem 0.9rem;
+    border-radius: 2px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.15s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero h1 .red { color: var(--red); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--light);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.3s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.45s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--red);
+    color: var(--white);
+    padding: 0.9rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(212,18,26,0.4);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--white);
+    padding: 0.9rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--red);
+    color: var(--red);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    position: absolute;
+    bottom: 60px;
+    right: 5vw;
+    display: flex;
+    gap: 3rem;
+    animation: fadeUp 0.6s 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .stat { text-align: right; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-num span { color: var(--red); }
+
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1.2rem 5vw;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: var(--deep);
+  }
+
+  .trust-bar::-webkit-scrollbar { display: none; }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .trust-item svg { color: var(--red); flex-shrink: 0; }
+
+  /* ── SECTION WRAPPER ── */
+  .section-wrap {
+    padding: 100px 5vw;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--red);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.03em;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--light);
+    font-weight: 300;
+    max-width: 520px;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ── SERVICES GRID ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+
+  .service-card {
+    background: var(--card);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .service-card:hover { background: #1a1a1a; }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--red-glow);
+    border: 1px solid rgba(212,18,26,0.3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .service-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    color: var(--white);
+  }
+
+  .service-card p {
+    font-size: 0.9rem;
+    color: var(--light);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .service-num {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--border);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .service-card:hover .service-num { color: rgba(212,18,26,0.1); }
+
+  /* ── HOW IT WORKS ── */
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0;
+    margin-top: 4rem;
+    position: relative;
+  }
+
+  .process-step {
+    padding: 2rem;
+    position: relative;
+  }
+
+  .process-step::after {
+    content: '→';
+    position: absolute;
+    right: -0.5rem;
+    top: 2rem;
+    color: var(--red);
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .process-step:last-child::after { display: none; }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .process-step h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .process-step p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .testi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .testi-card::before {
+    content: '"';
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: var(--border);
+    line-height: 1;
+  }
+
+  .stars {
+    color: var(--red);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .testi-card p {
+    font-size: 0.95rem;
+    color: var(--light);
+    line-height: 1.7;
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .testi-avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--red-glow);
+    border: 1px solid rgba(212,18,26,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--red);
+  }
+
+  .testi-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--white);
+  }
+
+  .testi-role {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--red);
+    padding: 60px 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-band::before {
+    content: 'TWB';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16rem;
+    color: rgba(255,255,255,0.05);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .cta-band-text h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0.03em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-band-text p {
+    font-size: 1rem;
+    opacity: 0.85;
+    font-weight: 300;
+  }
+
+  .cta-band-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--white);
+    color: var(--red);
+    padding: 0.9rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .btn-white:hover {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--white);
+    padding: 0.9rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 2px;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  .btn-outline-white:hover {
+    border-color: var(--white);
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+  }
+
+  /* ── SERVICES PAGE ── */
+  .service-detail {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .service-detail-header {
+    background: var(--card);
+    padding: 2.5rem 2.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .service-detail-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--red-glow);
+    border: 1px solid rgba(212,18,26,0.4);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .service-detail-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+  }
+
+  .service-detail-header p {
+    color: var(--light);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .service-detail-body {
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .detail-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.75rem;
+  }
+
+  .detail-col p {
+    font-size: 0.9rem;
+    color: var(--light);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .detail-col ul {
+    list-style: none;
+  }
+
+  .detail-col ul li {
+    font-size: 0.9rem;
+    color: var(--light);
+    padding: 0.3rem 0;
+    padding-left: 1rem;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .detail-col ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+  }
+
+  /* ── ABOUT PAGE ── */
+  .about-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    position: relative;
+    border-radius: 4px;
+  }
+
+  .about-box::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: -4px;
+    right: 4px; bottom: 4px;
+    border: 1px solid var(--red);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .about-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+
+  .about-box p {
+    color: var(--light);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .about-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .value-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 4px;
+    border-left: 3px solid var(--red);
+  }
+
+  .value-item h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+
+  .value-item p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .about-text h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    letter-spacing: 0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-text p {
+    color: var(--light);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  /* ── CONTACT PAGE ── */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-info h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    letter-spacing: 0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-info p {
+    color: var(--light);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .channel-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .channel-btn:hover {
+    border-color: var(--red);
+    background: var(--red-glow);
+    transform: translateX(4px);
+  }
+
+  .channel-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--red-glow);
+    border: 1px solid rgba(212,18,26,0.3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .channel-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .channel-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .contact-disclaimer {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* ── FORM ── */
+  .contact-form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    border-radius: 4px;
+  }
+
+  .contact-form h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+
+  .contact-form .form-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 0.8rem 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--red);
+  }
+
+  .form-group textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  .form-group select option {
+    background: var(--black);
+  }
+
+  .form-submit {
+    width: 100%;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    margin-top: 0.5rem;
+  }
+
+  .form-submit:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(212,18,26,0.4);
+  }
+
+  .form-privacy {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 1rem;
+    line-height: 1.4;
+  }
+
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    color: var(--light);
+  }
+
+  .form-success .success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-success h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid var(--border);
+    padding: 60px 5vw 30px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-brand .logo span { color: var(--red); }
+
+  .footer-brand p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li { margin-bottom: 0.5rem; }
+
+  .footer-col ul li a,
+  .footer-col ul li button {
+    background: none;
+    border: none;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+    padding: 0;
+  }
+
+  .footer-col ul li a:hover,
+  .footer-col ul li button:hover { color: var(--red); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .footer-disclaimer {
+    font-size: 0.72rem;
+    color: var(--border);
+    max-width: 600px;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .wa-tooltip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    white-space: nowrap;
+    animation: pulseTooltip 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseTooltip {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  .wa-btn {
+    width: 56px;
+    height: 56px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    transition: all 0.2s;
+    font-size: 1.5rem;
+  }
+
+  .wa-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(37,211,102,0.6);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    padding: 140px 5vw 80px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 50%, var(--red-glow) 100%);
+    pointer-events: none;
+  }
+
+  .page-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    letter-spacing: 0.03em;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .page-header p {
+    color: var(--light);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .about-split,
+    .contact-layout { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .service-detail-body { grid-template-columns: 1fr; gap: 1.5rem; }
+    .hero-stats { position: static; margin-top: 3rem; flex-direction: row; flex-wrap: wrap; gap: 2rem; }
+    .stat { text-align: left; }
+    .process-step::after { display: none; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(8,8,8,0.98);
+      padding: 2rem 5vw;
+      border-bottom: 1px solid var(--border);
+      gap: 1.5rem;
+    }
+    .nav-links.open a { font-size: 1rem; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-disclaimer { text-align: left; }
+    .process-steps { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 3.5rem; }
+    .about-values { grid-template-columns: 1fr; }
+    .cta-band { flex-direction: column; }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── HERO PHOTO ── */
+  .hero-photo-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 48%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero-photo-panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(30%) contrast(1.1);
+    animation: heroPhotoReveal 1.2s 0.2s ease forwards;
+    opacity: 0;
+    transform: scale(1.05);
+  }
+
+  @keyframes heroPhotoReveal {
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .hero-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      var(--black) 0%,
+      rgba(8,8,8,0.7) 30%,
+      rgba(8,8,8,0.2) 60%,
+      rgba(8,8,8,0.5) 100%
+    );
+    z-index: 2;
+  }
+
+  .hero-photo-overlay-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to top, var(--black), transparent);
+    z-index: 3;
+  }
+
+  .hero-photo-tag {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+    z-index: 4;
+    background: rgba(8,8,8,0.85);
+    border: 1px solid var(--red);
+    padding: 0.6rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    border-radius: 2px;
+    animation: fadeUp 0.6s 1s ease forwards;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  /* ── PHOTO CARDS SECTION ── */
+  .photo-cards-section {
+    padding: 100px 5vw;
+  }
+
+  .photo-cards-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .photo-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .photo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+  }
+
+  .photo-card.tall {
+    grid-row: span 2;
+  }
+
+  .photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease, filter 0.3s ease;
+    filter: grayscale(20%) contrast(1.05);
+    min-height: 240px;
+  }
+
+  .photo-card.tall img { min-height: 500px; }
+
+  .photo-card:hover img {
+    transform: scale(1.04);
+    filter: grayscale(0%) contrast(1.1);
+  }
+
+  .photo-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.3) 50%, transparent 100%);
+    transition: opacity 0.3s;
+  }
+
+  .photo-card:hover .photo-card-overlay {
+    background: linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(212,18,26,0.1) 50%, transparent 100%);
+  }
+
+  .photo-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    padding: 1.5rem;
+    z-index: 2;
+  }
+
+  .photo-card-tag {
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    margin-bottom: 0.5rem;
+  }
+
+  .photo-card h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1.2;
+  }
+
+  .photo-card p {
+    font-size: 0.8rem;
+    color: var(--light);
+    margin-top: 0.3rem;
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .photo-card:hover p {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .photo-card-accent {
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+  }
+
+  .photo-card:hover .photo-card-accent { height: 100%; }
+
+  @media (max-width: 900px) {
+    .photo-cards-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .photo-card.tall { grid-row: span 1; }
+    .photo-card.tall img { min-height: 240px; }
+    .hero-photo-panel { display: none; }
+    .hero { min-height: 100svh; }
+  }
+
+  @media (max-width: 640px) {
+    .photo-cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" onclick="showPage('home')">TRACK <span>WITH BOB</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('services')">Services</a></li>
+    <li><a href="#" onclick="showPage('about')">About</a></li>
+    <li><a href="#" class="nav-cta" onclick="showPage('contact')">Contact Us</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- WhatsApp Float -->
+<div class="wa-float">
+  <div class="wa-tooltip">💬 Chat with us now</div>
+  <a href="https://wa.me/2348132313370" class="wa-btn" target="_blank">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HOME PAGE
+═══════════════════════════════════════ -->
+<section id="home" class="active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-redline"></div>
+
+    <!-- HERO PHOTO PANEL -->
+    <div class="hero-photo-panel">
+      <img
+        src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1200&q=85&auto=format&fit=crop"
+        alt="Professional security team in action"
+        loading="eager"
+      />
+      <div class="hero-photo-overlay"></div>
+      <div class="hero-photo-overlay-bottom"></div>
+      <div class="hero-photo-tag">⚡ Professional & Confidential</div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">Nigeria's Trusted Recovery Partner</div>
+      <h1>FIND WHAT<br>WAS <span class="red">TAKEN.</span></h1>
+      <p class="hero-sub">Professional tracking and recovery assistance for stolen devices, missing persons, and fraud cases. Confidential, ethical, and results-driven.</p>
+      <div class="hero-ctas">
+        <a href="tel:+2348132313370" class="btn-primary">
+          📞 Call Now — Act Fast
+        </a>
+        <a href="https://wa.me/2348132313370" class="btn-secondary" target="_blank">
+          💬 WhatsApp Us
+        </a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">500<span>+</span></div>
+        <div class="stat-label">Cases Handled</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">98<span>%</span></div>
+        <div class="stat-label">Client Satisfaction</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24<span>/7</span></div>
+        <div class="stat-label">Response Time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-item">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+      Fully Confidential
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+      Ethical Operations
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+      Lagos & Nationwide
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      Legally Compliant
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+      Professional Team
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      24/7 Available
+    </div>
+  </div>
+
+  <!-- SERVICES PREVIEW -->
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">PROFESSIONAL<br>TRACKING SERVICES</h2>
+      <p class="section-sub">We assist individuals and organizations in recovering assets and locating persons through ethical, professional methods.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">📱</div>
+        <h3>Device Recovery</h3>
+        <p>Assistance with locating and recovering stolen phones, laptops, and electronic gadgets through proper channels.</p>
+        <div class="service-num">01</div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🚗</div>
+        <h3>Vehicle Tracking</h3>
+        <p>Help locating stolen or missing vehicles using tracking data and professional coordination with relevant authorities.</p>
+        <div class="service-num">02</div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">👤</div>
+        <h3>Missing Persons</h3>
+        <p>Sensitive and professional support for families seeking to locate missing loved ones through lawful means.</p>
+        <div class="service-num">03</div>
+      </div>
+      <div class="service-card reveal reveal-delay-4">
+        <div class="service-icon">🛡️</div>
+        <h3>Fraud Case Support</h3>
+        <p>Assistance to victims of scams and fraud — helping document, trace, and report incidents for legal recovery.</p>
+        <div class="service-num">04</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PHOTO CARDS — IN ACTION -->
+  <div class="photo-cards-section">
+    <div class="reveal">
+      <div class="section-label">On The Ground</div>
+      <h2 class="section-title">PROFESSIONALS<br>YOU CAN TRUST</h2>
+      <p class="section-sub">Our work is backed by coordination with law enforcement, cybercrime units, and trained field operatives across Nigeria.</p>
+    </div>
+
+    <div class="photo-cards-grid">
+
+      <!-- CARD 1 — TALL / FEATURED -->
+      <div class="photo-card tall reveal reveal-delay-1">
+        <div class="photo-card-accent"></div>
+        <img
+          src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=900&q=85&auto=format&fit=crop&crop=faces"
+          alt="Law enforcement officer on duty"
+          loading="lazy"
+        />
+        <div class="photo-card-overlay"></div>
+        <div class="photo-card-content">
+          <span class="photo-card-tag">Law Enforcement</span>
+          <h4>Coordination With Nigerian Authorities</h4>
+          <p>We work alongside official security agencies for lawful, accountable case resolution.</p>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="photo-card reveal reveal-delay-2">
+        <div class="photo-card-accent"></div>
+        <img
+          src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=85&auto=format&fit=crop"
+          alt="Cyber tracking and digital investigation"
+          loading="lazy"
+        />
+        <div class="photo-card-overlay"></div>
+        <div class="photo-card-content">
+          <span class="photo-card-tag">Digital Tracking</span>
+          <h4>Cyber Investigation Support</h4>
+          <p>Advanced digital tracing for fraud cases, device recovery, and cybercrime documentation.</p>
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="photo-card reveal reveal-delay-3">
+        <div class="photo-card-accent"></div>
+        <img
+          src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=85&auto=format&fit=crop"
+          alt="Security professional at workstation"
+          loading="lazy"
+        />
+        <div class="photo-card-overlay"></div>
+        <div class="photo-card-content">
+          <span class="photo-card-tag">Operations</span>
+          <h4>24/7 Monitoring & Response</h4>
+          <p>Round-the-clock case monitoring to ensure nothing slips through the cracks.</p>
+        </div>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="photo-card reveal reveal-delay-2">
+        <div class="photo-card-accent"></div>
+        <img
+          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=85&auto=format&fit=crop&crop=faces"
+          alt="Professional investigator reviewing case"
+          loading="lazy"
+        />
+        <div class="photo-card-overlay"></div>
+        <div class="photo-card-content">
+          <span class="photo-card-tag">Case Management</span>
+          <h4>Expert Case Review & Guidance</h4>
+          <p>Every case is personally reviewed and assigned a dedicated point of contact.</p>
+        </div>
+      </div>
+
+      <!-- CARD 5 -->
+      <div class="photo-card reveal reveal-delay-3">
+        <div class="photo-card-accent"></div>
+        <img
+          src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=85&auto=format&fit=crop"
+          alt="Team collaboration on security case"
+          loading="lazy"
+        />
+        <div class="photo-card-overlay"></div>
+        <div class="photo-card-content">
+          <span class="photo-card-tag">Team</span>
+          <h4>Multi-Disciplinary Recovery Team</h4>
+          <p>A coordinated team of investigators, analysts, and liaison officers working your case.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-label">Our Process</div>
+      <h2 class="section-title">HOW IT WORKS</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-num">01</div>
+        <h4>Reach Out</h4>
+        <p>Call or message us immediately. The sooner we know, the better your chances of recovery.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-num">02</div>
+        <h4>Case Review</h4>
+        <p>We gather details about your case and assess the best professional approach to assist you.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-num">03</div>
+        <h4>Action Plan</h4>
+        <p>A tailored, ethical recovery or tracking strategy is put in place with clear communication throughout.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-4">
+        <div class="step-num">04</div>
+        <h4>Resolution</h4>
+        <p>We work toward a successful outcome and guide you through any further legal steps if needed.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TESTIMONIALS -->
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-label">Client Experiences</div>
+      <h2 class="section-title">WHAT CLIENTS<br>ARE SAYING</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <p>My iPhone was stolen on the Third Mainland Bridge. Bob's team helped me coordinate with the right people and I had it back within 36 hours. I was skeptical at first but they were completely professional.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AO</div>
+          <div>
+            <div class="testi-name">Adaeze O.</div>
+            <div class="testi-role">Lagos Island</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p>After being defrauded of ₦400,000 online, I didn't know where to turn. Track With Bob guided me through the whole process, helped me document everything, and connected me with the right legal channels.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">EI</div>
+          <div>
+            <div class="testi-name">Emeka I.</div>
+            <div class="testi-role">Abuja</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-3">
+        <div class="stars">★★★★★</div>
+        <p>When my elderly father wandered off and couldn't be found, Bob's team was calm, efficient, and incredibly compassionate. They found him within hours. I can never thank them enough.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">FN</div>
+          <div>
+            <div class="testi-name">Funke N.</div>
+            <div class="testi-role">Ibadan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band reveal">
+    <div class="cta-band-text">
+      <h2>TIME IS CRITICAL.<br>DON'T WAIT.</h2>
+      <p>The longer you wait, the harder recovery becomes. Reach out now.</p>
+    </div>
+    <div class="cta-band-actions">
+      <a href="tel:+2348132313370" class="btn-white">📞 Call 0813 231 3370</a>
+      <a href="https://wa.me/2348132313370" class="btn-outline-white" target="_blank">💬 WhatsApp Now</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     SERVICES PAGE
+═══════════════════════════════════════ -->
+<section id="services">
+
+  <div class="page-header">
+    <div class="section-label">Our Services</div>
+    <h1>WHAT WE <span style="color:var(--red)">OFFER</span></h1>
+    <p>Professional, confidential, and legally compliant tracking and recovery support. Every case is handled with discretion and urgency.</p>
+  </div>
+
+  <div class="section-wrap">
+
+    <div class="service-detail reveal">
+      <div class="service-detail-header">
+        <div class="service-detail-icon">📱</div>
+        <div>
+          <h2>DEVICE RECOVERY ASSISTANCE</h2>
+          <p>Helping victims of phone, laptop, and gadget theft to recover their property through coordinated and lawful means.</p>
+        </div>
+      </div>
+      <div class="service-detail-body">
+        <div class="detail-col">
+          <h4>What It Is</h4>
+          <p>We assist individuals whose phones, laptops, tablets, or other electronics have been stolen. Using tracking data, IMEI tracing guidance, and professional coordination, we help build a recovery pathway that works within legal boundaries.</p>
+        </div>
+        <div class="detail-col">
+          <h4>How We Help</h4>
+          <ul>
+            <li>Advise on immediate steps after theft</li>
+            <li>Assist with IMEI reporting and carrier coordination</li>
+            <li>Coordinate with local law enforcement where applicable</li>
+            <li>Guide through telecom and platform escalation channels</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Who It's For</h4>
+          <ul>
+            <li>Individuals with stolen smartphones or laptops</li>
+            <li>Small businesses with missing equipment</li>
+            <li>Anyone who has had gadgets taken by force or theft</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-detail reveal">
+      <div class="service-detail-header">
+        <div class="service-detail-icon">🚗</div>
+        <div>
+          <h2>VEHICLE TRACKING ASSISTANCE</h2>
+          <p>Professional support for vehicle owners dealing with theft, unauthorized use, or location uncertainty.</p>
+        </div>
+      </div>
+      <div class="service-detail-body">
+        <div class="detail-col">
+          <h4>What It Is</h4>
+          <p>We assist vehicle owners in locating stolen or missing vehicles by helping them access existing GPS data, coordinating with tracking service providers, and supporting proper police reports.</p>
+        </div>
+        <div class="detail-col">
+          <h4>How We Help</h4>
+          <ul>
+            <li>Help interpret vehicle tracker data</li>
+            <li>Coordinate with tracking device providers</li>
+            <li>Support documentation for police reports</li>
+            <li>Liaise with relevant transport authorities</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Who It's For</h4>
+          <ul>
+            <li>Car owners dealing with vehicle theft</li>
+            <li>Fleet operators monitoring assets</li>
+            <li>Individuals verifying vehicle location</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-detail reveal">
+      <div class="service-detail-header">
+        <div class="service-detail-icon">👤</div>
+        <div>
+          <h2>MISSING PERSONS SUPPORT</h2>
+          <p>Compassionate, professional support for families and individuals dealing with the distress of a missing loved one.</p>
+        </div>
+      </div>
+      <div class="service-detail-body">
+        <div class="detail-col">
+          <h4>What It Is</h4>
+          <p>We provide structured support and professional guidance to families seeking to locate missing persons — including elderly relatives, missing children, or individuals who have lost contact. All assistance is provided lawfully and sensitively.</p>
+        </div>
+        <div class="detail-col">
+          <h4>How We Help</h4>
+          <ul>
+            <li>Guidance on filing official missing persons reports</li>
+            <li>Coordination with relevant authorities</li>
+            <li>Assistance with information gathering</li>
+            <li>Communication support throughout the process</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Who It's For</h4>
+          <ul>
+            <li>Families of missing adults or elderly relatives</li>
+            <li>Parents concerned about missing children</li>
+            <li>Individuals who've lost contact with family</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-detail reveal">
+      <div class="service-detail-header">
+        <div class="service-detail-icon">🛡️</div>
+        <div>
+          <h2>FRAUD CASE SUPPORT</h2>
+          <p>Helping victims of financial scams and online fraud document, report, and seek recovery through proper channels.</p>
+        </div>
+      </div>
+      <div class="service-detail-body">
+        <div class="detail-col">
+          <h4>What It Is</h4>
+          <p>We assist fraud victims in organizing their cases, documenting evidence, and understanding the proper reporting pathways — including relevant financial institutions, EFCC referrals, and cybercrime units.</p>
+        </div>
+        <div class="detail-col">
+          <h4>How We Help</h4>
+          <ul>
+            <li>Help compile and organize case documentation</li>
+            <li>Advise on EFCC and cybercrime unit reporting</li>
+            <li>Coordinate with banks for transaction tracing</li>
+            <li>Provide referrals to legal professionals if needed</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Who It's For</h4>
+          <ul>
+            <li>Victims of online and investment scams</li>
+            <li>Individuals defrauded via mobile money or transfers</li>
+            <li>Businesses dealing with internal financial fraud</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <div class="cta-band-text">
+      <h2>READY TO TAKE<br>ACTION?</h2>
+      <p>Reach us immediately. Every minute matters in a recovery case.</p>
+    </div>
+    <div class="cta-band-actions">
+      <a href="tel:+2348132313370" class="btn-white">📞 Call Now</a>
+      <a href="#" class="btn-outline-white" onclick="showPage('contact')">Send a Message</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     ABOUT PAGE
+═══════════════════════════════════════ -->
+<section id="about">
+
+  <div class="page-header">
+    <div class="section-label">About Us</div>
+    <h1>WHO IS <span style="color:var(--red)">BOB?</span></h1>
+    <p>A professional tracking and recovery consultancy built on trust, discretion, and results.</p>
+  </div>
+
+  <div class="section-wrap">
+    <div class="about-split">
+      <div class="about-visual">
+        <div class="about-box reveal">
+          <div class="about-big">TWB</div>
+          <p style="font-size:1.1rem; font-family:'Bebas Neue', sans-serif; letter-spacing:0.05em; color:var(--white); margin-bottom:0.5rem;">Track With Bob</p>
+          <p>Founded with one mission: to give everyday Nigerians access to professional, ethical recovery support — the kind that was once only available to the privileged few.</p>
+        </div>
+        <div class="about-values reveal">
+          <div class="value-item">
+            <h4>Confidentiality</h4>
+            <p>Your case information is handled with strict privacy and never shared without consent.</p>
+          </div>
+          <div class="value-item">
+            <h4>Ethics First</h4>
+            <p>We operate within legal boundaries and cooperate with authorities where required.</p>
+          </div>
+          <div class="value-item">
+            <h4>Accountability</h4>
+            <p>Clear communication throughout. You're never left in the dark about your case.</p>
+          </div>
+          <div class="value-item">
+            <h4>Speed</h4>
+            <p>We respond fast. In recovery cases, time directly impacts outcome.</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <h2>BUILT ON TRUST.<br>DRIVEN BY RESULTS.</h2>
+        <p>Track With Bob was established to fill a critical gap: too many Nigerians lose valuable assets, missing loved ones go unfound, and fraud victims have nowhere professional to turn.</p>
+        <p>With years of experience in tracking, coordination, and case management, our team brings a structured, professional approach to what are often the most stressful moments in a person's life.</p>
+        <p>We believe every case matters. Whether it's a stolen ₦200,000 phone or a missing family member — we take it seriously, we move fast, and we are with you throughout the process.</p>
+        <p style="color:var(--muted); font-size:0.85rem; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border);">
+          <strong style="color:var(--white);">Important Note:</strong> All services are delivered within the bounds of Nigerian law. We do not engage in unauthorized surveillance, illegal access, or any activity that violates the privacy rights of individuals. We encourage all clients to file official reports with relevant authorities, and we cooperate fully with law enforcement where applicable.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-band reveal">
+    <div class="cta-band-text">
+      <h2>HAVE A CASE?<br>LET'S TALK.</h2>
+      <p>We review every case personally. Initial consultation is free.</p>
+    </div>
+    <div class="cta-band-actions">
+      <a href="https://wa.me/2348132313370" class="btn-white" target="_blank">💬 WhatsApp Us</a>
+      <a href="tel:+2348132313370" class="btn-outline-white">📞 Call 0813 231 3370</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     CONTACT PAGE
+═══════════════════════════════════════ -->
+<section id="contact">
+
+  <div class="page-header">
+    <div class="section-label">Get In Touch</div>
+    <h1>CONTACT <span style="color:var(--red)">US</span></h1>
+    <p>Reach out immediately. For urgent cases, call or WhatsApp us directly — don't wait.</p>
+  </div>
+
+  <div class="section-wrap">
+    <div class="contact-layout">
+
+      <div class="contact-info reveal">
+        <h2>REACH US<br>DIRECTLY.</h2>
+        <p>For urgent recovery cases, a phone call or WhatsApp message is the fastest way to begin. For non-urgent inquiries, use the form and we'll respond within 24 hours.</p>
+        <div class="contact-channels">
+          <a href="tel:+2348132313370" class="channel-btn">
+            <div class="channel-icon">📞</div>
+            <div>
+              <div class="channel-label">Phone Call</div>
+              <div class="channel-value">0813 231 3370</div>
+            </div>
+          </a>
+          <a href="https://wa.me/2348132313370" class="channel-btn" target="_blank">
+            <div class="channel-icon">💬</div>
+            <div>
+              <div class="channel-label">WhatsApp</div>
+              <div class="channel-value">+234 813 231 3370</div>
+            </div>
+          </a>
+          <div class="channel-btn" style="cursor:default;">
+            <div class="channel-icon">🕐</div>
+            <div>
+              <div class="channel-label">Response Time</div>
+              <div class="channel-value">Available 24/7</div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-disclaimer">
+          <strong>⚠️ Disclaimer:</strong> Track With Bob provides advisory, coordination, and documentation support. All activities are conducted lawfully and in cooperation with relevant Nigerian authorities. We do not conduct unauthorized surveillance or engage in any illegal tracking activities. If your case requires immediate law enforcement intervention, please contact the Nigerian Police Force.
+        </div>
+      </div>
+
+      <div class="contact-form reveal reveal-delay-2">
+        <h3>Send Us a Message</h3>
+        <p class="form-sub">Tell us about your case and we'll reach out as soon as possible.</p>
+        <div id="contactForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="Your full name" id="fname">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="e.g. 0812 345 6789" id="fphone">
+          </div>
+          <div class="form-group">
+            <label>Case Type</label>
+            <select id="fcase">
+              <option value="" disabled selected>Select your issue</option>
+              <option>Stolen Phone / Device</option>
+              <option>Stolen Vehicle</option>
+              <option>Missing Person</option>
+              <option>Fraud / Scam Case</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Brief Description</label>
+            <textarea placeholder="Briefly describe what happened and when..." id="fdesc"></textarea>
+          </div>
+          <button class="form-submit" onclick="submitForm()">Submit Case — We'll Call You Back</button>
+          <p class="form-privacy">🔒 Your information is handled with strict confidentiality and never shared with third parties without your consent.</p>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">✅</div>
+          <h4>MESSAGE RECEIVED</h4>
+          <p>We've received your case details and will reach out to you shortly. For urgent matters, please call us directly on <a href="tel:+2348132313370" style="color:var(--red);">0813 231 3370</a>.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">TRACK <span>WITH BOB</span></div>
+      <p>Nigeria's trusted partner for professional tracking, recovery assistance, and fraud case support. Confidential. Ethical. Results-driven.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><button onclick="showPage('services')">Device Recovery</button></li>
+        <li><button onclick="showPage('services')">Vehicle Tracking</button></li>
+        <li><button onclick="showPage('services')">Missing Persons</button></li>
+        <li><button onclick="showPage('services')">Fraud Support</button></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><button onclick="showPage('about')">About Us</button></li>
+        <li><button onclick="showPage('contact')">Contact</button></li>
+        <li><button onclick="showPage('home')">Home</button></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+2348132313370">0813 231 3370</a></li>
+        <li><a href="https://wa.me/2348132313370" target="_blank">WhatsApp Us</a></li>
+        <li style="color:var(--muted); font-size:0.8rem; margin-top:0.5rem;">Available 24/7 for urgent cases</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Track With Bob. All rights reserved.</p>
+    <p class="footer-disclaimer">All services are advisory in nature and conducted within the bounds of Nigerian law. Track With Bob does not engage in unauthorized surveillance, illegal interception, or any activity that violates applicable privacy laws. Cooperation with law enforcement is standard practice.</p>
+  </div>
+</footer>
+
+<script>
+  // ── PAGE NAVIGATION ──
+  function showPage(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Re-trigger reveals on page switch
+      setTimeout(() => triggerReveal(), 100);
+    }
+    // Close mobile menu
+    document.getElementById('navLinks').classList.remove('open');
+  }
+
+  // ── MOBILE MENU ──
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  // ── SCROLL REVEAL ──
+  function triggerReveal() {
+    const reveals = document.querySelectorAll('.active .reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(el => {
+      el.classList.remove('visible');
+      observer.observe(el);
+    });
+  }
+
+  // ── FORM SUBMIT ──
+  function submitForm() {
+    const name = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('fphone').value.trim();
+    const caseType = document.getElementById('fcase').value;
+
+    if (!name || !phone || !caseType) {
+      alert('Please fill in your name, phone number, and case type.');
+      return;
+    }
+
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+
+    // In production: replace with actual form submission (e.g. Formspree, EmailJS, etc.)
+    const waMsg = encodeURIComponent(`Hi Track With Bob, my name is ${name}. I have a ${caseType} case. My number is ${phone}.`);
+    setTimeout(() => {
+      window.open(`https://wa.me/2348132313370?text=${waMsg}`, '_blank');
+    }, 1500);
+  }
+
+  // ── INIT ──
+  document.addEventListener('DOMContentLoaded', () => {
+    triggerReveal();
+
+    // Also trigger on scroll
+    window.addEventListener('scroll', () => {
+      const reveals = document.querySelectorAll('.active .reveal');
+      reveals.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.9) {
+          el.classList.add('visible');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
